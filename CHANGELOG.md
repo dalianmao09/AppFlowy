@@ -1,5 +1,5 @@
 # Release Notes
-## Version 0.6.5 - 24/07/2024
+## Version 0.6.5.1 - 24/07/2024
 ### New Features
 - Publish a Database to the Web
 
