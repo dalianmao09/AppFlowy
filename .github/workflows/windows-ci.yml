@@ -14,40 +14,14 @@ env:
   RUST_TOOLCHAIN: "1.77.2"
 
 jobs:
-  create-release:
-    runs-on: ubuntu-latest
-    env:
-      RELEASE_NOTES_PATH: /tmp/release_notes
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build release notes
-        run: |
-          touch ${{ env.RELEASE_NOTES_PATH }}
-          cat CHANGELOG.md | sed -e '/./{H;$!d;}' -e "x;/##\ Version\ ${{ github.ref_name }}/"'!d;' >> ${{ env.RELEASE_NOTES_PATH }}
-
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: v${{ github.ref }}
-          body_path: ${{ env.RELEASE_NOTES_PATH }}
-
-  # the package name should be with the format: AppFlowy-<version>-<os>-<arch>
 
   build-for-windows:
     name: build-for-windows
-    needs: create-release
+    #needs: create-release
     env:
-      WINDOWS_APP_RELEASE_PATH: frontend\appflowy_flutter\product\${{ github.ref_name }}\windows
-      WINDOWS_ZIP_NAME: AppFlowy-${{ github.ref_name }}-windows-x86_64.zip
-      WINDOWS_INSTALLER_NAME: AppFlowy-${{ github.ref_name }}-windows-x86_64
+      WINDOWS_APP_RELEASE_PATH: frontend\appflowy_flutter\product\windows
+      WINDOWS_ZIP_NAME: AppFlowy-latest-windows-x86_64.zip
+      WINDOWS_INSTALLER_NAME: AppFlowy-windows-x86_64
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
